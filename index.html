@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Racquet events and ladders</title>
+<meta name="description" content="Racquet events and ladders for club players. Run by club members; not an official club page.">
+<meta name="theme-color" content="#1b4332">
+<meta name="apple-mobile-web-app-title" content="Racquet">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="manifest" href="site.webmanifest">
+<style>
+  html, body { margin: 0; height: 100%; background: #1b4332; }
+  body { padding-top: env(safe-area-inset-top, 0px); box-sizing: border-box; }
+  iframe { display: block; width: 100%; height: 100%; border: 0; background: #f1f1f2; }
+</style>
+</head>
+<body>
+<iframe id="hub" title="Racquet events and ladders" allow="clipboard-write"></iframe>
+<script>
+// rallygators.com shows the hub (an Apps Script web app) full screen and gives phones an icon and a name.
+// A personal link looks like rallygators.com/#me=<key> (or ?me=<key>); go=<id> opens a card.
+// The key after # never reaches this site's server. It is kept on this phone, because a page saved to
+// the home screen may open again without it.
+(function () {
+  var HUB = 'https://script.google.com/macros/s/AKfycbzxkGGBpHKlN5kx1_-_CCs6424cXXECZyyczhdLXtBurmxSILQ9IDFgD-iR1vXcZEyUqw/exec';
+  var params = new URLSearchParams(location.hash.slice(1) || location.search.slice(1));
+  var ok = function (v) { return v && /^[A-Za-z0-9]{1,64}$/.test(v); };
+  var me = params.get('me'), go = params.get('go');
+  try {
+    if (ok(me)) localStorage.setItem('reh_me', me);
+    else me = localStorage.getItem('reh_me');
+  } catch (e) { /* private browsing: just use the link as it is */ }
+  var q = [];
+  if (ok(me)) q.push('me=' + me);
+  if (ok(go)) q.push('go=' + go);
+  document.getElementById('hub').src = HUB + (q.length ? '?' + q.join('&') : '');
+})();
+</script>
+</body>
+</html>
