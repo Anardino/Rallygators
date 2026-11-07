@@ -24,15 +24,18 @@
 // rallygators.com shows the hub (an Apps Script web app) full screen and gives phones an icon and a name.
 // A personal link looks like rallygators.com/#me=<key> (or ?me=<key>); go=<id> opens a card.
 // The key after # never reaches this site's server. It is kept on this phone, because a page saved to
-// the home screen may open again without it.
+// the home screen may open again without it. Only the home screen icon uses the kept key: in a browser
+// tab, rallygators.com with no key is always the public page, so both pages can be open side by side.
 (function () {
   var HUB = 'https://script.google.com/macros/s/AKfycbzxkGGBpHKlN5kx1_-_CCs6424cXXECZyyczhdLXtBurmxSILQ9IDFgD-iR1vXcZEyUqw/exec';
   var params = new URLSearchParams(location.hash.slice(1) || location.search.slice(1));
   var ok = function (v) { return v && /^[A-Za-z0-9]{1,64}$/.test(v); };
   var me = params.get('me'), go = params.get('go');
+  var icon = navigator.standalone === true ||
+    (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
   try {
     if (ok(me)) localStorage.setItem('reh_me', me);
-    else me = localStorage.getItem('reh_me');
+    else if (icon) me = localStorage.getItem('reh_me');
   } catch (e) { /* private browsing: just use the link as it is */ }
   var q = [];
   if (ok(me)) q.push('me=' + me);
